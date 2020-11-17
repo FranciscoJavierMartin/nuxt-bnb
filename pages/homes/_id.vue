@@ -30,7 +30,9 @@
           <l-tile-layer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
           ></l-tile-layer>
-          <l-marker :lat-lng="this.mapOptions.center" />
+          <l-marker :lat-lng="this.mapOptions.center"
+            ><l-popup>{{ home.title }}</l-popup></l-marker
+          >
         </l-map>
       </client-only>
     </div>
