@@ -19,6 +19,21 @@
     {{ home.reviewValue }}
     {{ home.guests }} guests, {{ home.bedrooms }} rooms, {{ home.beds }} beds,
     {{ home.bathrooms }} bathrooms
+    {{ home.description }}
+    <div class="map">
+      <client-only placeholder="Loading...">
+        <l-map
+          :options="{ zoomControl: false, scrollWheelZoom: false }"
+          :zoom="this.mapOptions.zoom"
+          :center="this.mapOptions.center"
+        >
+          <l-tile-layer
+            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+          ></l-tile-layer>
+          <l-marker :lat-lng="this.mapOptions.center" />
+        </l-map>
+      </client-only>
+    </div>
   </div>
 </template>
 
@@ -30,6 +45,15 @@ export default {
     return {
       home: {},
     };
+  },
+  computed: {
+    mapOptions() {
+      return {
+        zoom: 20,
+        center: [this.home._geoloc.lat, this.home._geoloc.lng],
+        zoomControl: true,
+      };
+    },
   },
   created() {
     const home = homes.find((h) => h.objectID === this.$route.params.id);
@@ -46,5 +70,10 @@ export default {
 .carousel img {
   height: 150px;
   width: 200px;
+}
+
+.map {
+  height: 800px;
+  width: 800px;
 }
 </style>
