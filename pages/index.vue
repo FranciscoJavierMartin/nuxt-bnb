@@ -19,7 +19,7 @@ export default {
   },
   head() {
     return {
-      title: 'Home',
+      title: 'Home 1',
       meta: [
         {
           name: 'description',
