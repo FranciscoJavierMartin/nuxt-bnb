@@ -1,5 +1,5 @@
 # Nuxt BnB
-An AirBnB clone made with Nuxt.js
+An AirBnB clone made with Nuxt.js. You can see the live site at https://nuxt-bnb.vercel.app/
 
 ## Build Setup
 
