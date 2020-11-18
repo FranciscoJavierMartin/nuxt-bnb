@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Nanan</h1>
     <div v-for="home in homes" :key="home.objectID" class="home-card">
       <nuxt-link :to="`/homes/${home.objectID}`">
         <home-card :home="home" />
