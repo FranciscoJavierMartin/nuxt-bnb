@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Hello</h1>
     <div v-for="home in homes" :key="home.objectID" class="home-card">
       <nuxt-link :to="`/homes/${home.objectID}`">
         <home-card :home="home" />
@@ -20,7 +19,7 @@ export default {
   },
   head() {
     return {
-      title: 'HomePage',
+      title: 'Home',
       meta: [
         {
           name: 'description',

@@ -43,6 +43,11 @@
 import homes from '@/data/homes.json';
 
 export default {
+  head() {
+    return {
+      title: this.home.title,
+    };
+  },
   data() {
     return {
       home: {},
