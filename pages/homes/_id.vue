@@ -24,13 +24,13 @@
       <client-only placeholder="Loading...">
         <l-map
           :options="{ zoomControl: false, scrollWheelZoom: false }"
-          :zoom="this.mapOptions.zoom"
-          :center="this.mapOptions.center"
+          :zoom="mapOptions.zoom"
+          :center="mapOptions.center"
         >
           <l-tile-layer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
           ></l-tile-layer>
-          <l-marker :lat-lng="this.mapOptions.center"
+          <l-marker :lat-lng="mapOptions.center"
             ><l-popup>{{ home.title }}</l-popup></l-marker
           >
         </l-map>
@@ -40,18 +40,18 @@
 </template>
 
 <script>
-import homes from '@/data/homes.json';
-
 export default {
-  head() {
-    return {
-      title: this.home.title,
-    };
-  },
-  data() {
-    return {
-      home: {},
-    };
+  async asyncData({ params, $dataApi, error }) {
+    const response = await $dataApi.getHome(params.id);
+
+    return response.ok
+      ? {
+          home: response.json,
+        }
+      : error({
+          statusCode: response.status,
+          message: response.statusText,
+        });
   },
   computed: {
     mapOptions() {
@@ -62,9 +62,11 @@ export default {
       };
     },
   },
-  created() {
-    const home = homes.find((h) => h.objectID === this.$route.params.id);
-    this.home = home;
+
+  head() {
+    return {
+      title: this.home.title,
+    };
   },
 };
 </script>
