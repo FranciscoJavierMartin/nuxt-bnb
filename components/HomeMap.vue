@@ -19,7 +19,20 @@
 
 <script>
 export default {
-  props: ['lat', 'lng', 'title'],
+  props: {
+    lat: {
+      type: Number,
+      required: true,
+    },
+    lng: {
+      type: Number,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     mapOptions() {
       return {

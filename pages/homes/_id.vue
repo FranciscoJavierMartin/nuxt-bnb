@@ -20,8 +20,7 @@
     {{ home.guests }} guests, {{ home.bedrooms }} rooms, {{ home.beds }} beds,
     {{ home.bathrooms }} bathrooms
     {{ home.description }}
-    <!--   -->
-    <custom-map
+    <home-map
       :lat="home._geoloc.lat"
       :lng="home._geoloc.lng"
       :title="home.title"
