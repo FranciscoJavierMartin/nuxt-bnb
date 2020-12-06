@@ -28,9 +28,14 @@
     <div v-for="review in reviews" :key="review.objectID">
       <img :src="review.reviewer.image" />
       {{ review.reviewer.name }}
-      {{ review.date }}
-      {{ review.comment }}
+      {{ formatDate(review.date) }}
+      <short-text :text="review.comment" :target="150" />
     </div>
+    <img :src="user.image" />
+    {{ user.name }}
+    {{ formatDate(user.joined) }}
+    {{ user.reviewCount }}
+    {{ user.description }}
   </div>
 </template>
 
@@ -43,10 +48,20 @@ export default {
     if (homeResponse.ok) {
       const reviewResponse = await $dataApi.getReviewsByHomeId(params.id);
       if (reviewResponse.ok) {
-        res = {
-          home: homeResponse.json,
-          reviews: reviewResponse.json.hits,
-        };
+        const userResponse = await $dataApi.getUserByHomeId(params.id);
+
+        if (userResponse.ok) {
+          res = {
+            home: homeResponse.json,
+            reviews: reviewResponse.json.hits,
+            user: userResponse.json.hits[0],
+          };
+        } else {
+          res = error({
+            statusCode: userResponse.status,
+            message: userResponse.statusText,
+          });
+        }
       } else {
         res = error({
           statusCode: reviewResponse.status,
@@ -65,6 +80,15 @@ export default {
     return {
       title: this.home.title,
     };
+  },
+  methods: {
+    formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString(undefined, {
+        month: 'long',
+        year: 'numeric',
+      });
+    },
   },
 };
 </script>
