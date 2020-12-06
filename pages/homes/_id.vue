@@ -20,22 +20,12 @@
     {{ home.guests }} guests, {{ home.bedrooms }} rooms, {{ home.beds }} beds,
     {{ home.bathrooms }} bathrooms
     {{ home.description }}
-    <div class="map">
-      <client-only placeholder="Loading...">
-        <l-map
-          :options="{ zoomControl: false, scrollWheelZoom: false }"
-          :zoom="mapOptions.zoom"
-          :center="mapOptions.center"
-        >
-          <l-tile-layer
-            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-          ></l-tile-layer>
-          <l-marker :lat-lng="mapOptions.center"
-            ><l-popup>{{ home.title }}</l-popup></l-marker
-          >
-        </l-map>
-      </client-only>
-    </div>
+    <!--   -->
+    <custom-map
+      :lat="home._geoloc.lat"
+      :lng="home._geoloc.lng"
+      :title="home.title"
+    />
     <div v-for="review in reviews" :key="review.objectID">
       <img :src="review.reviewer.image" />
       {{ review.reviewer.name }}
@@ -72,16 +62,6 @@ export default {
     }
     return res;
   },
-  computed: {
-    mapOptions() {
-      return {
-        zoom: 20,
-        center: [this.home._geoloc.lat, this.home._geoloc.lng],
-        zoomControl: true,
-      };
-    },
-  },
-
   head() {
     return {
       title: this.home.title,
@@ -98,10 +78,5 @@ export default {
 .carousel img {
   height: 150px;
   width: 200px;
-}
-
-.map {
-  height: 800px;
-  width: 800px;
 }
 </style>
