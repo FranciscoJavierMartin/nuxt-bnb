@@ -36,22 +36,41 @@
         </l-map>
       </client-only>
     </div>
+    <div v-for="review in reviews" :key="review.objectID">
+      <img :src="review.reviewer.image" />
+      {{ review.reviewer.name }}
+      {{ review.date }}
+      {{ review.comment }}
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   async asyncData({ params, $dataApi, error }) {
-    const response = await $dataApi.getHome(params.id);
+    let res;
+    const homeResponse = await $dataApi.getHome(params.id);
 
-    return response.ok
-      ? {
-          home: response.json,
-        }
-      : error({
-          statusCode: response.status,
-          message: response.statusText,
+    if (homeResponse.ok) {
+      const reviewResponse = await $dataApi.getReviewsByHomeId(params.id);
+      if (reviewResponse.ok) {
+        res = {
+          home: homeResponse.json,
+          reviews: reviewResponse.json.hits,
+        };
+      } else {
+        res = error({
+          statusCode: reviewResponse.status,
+          message: reviewResponse.statusText,
         });
+      }
+    } else {
+      res = error({
+        statusCode: homeResponse.status,
+        message: homeResponse.statusText,
+      });
+    }
+    return res;
   },
   computed: {
     mapOptions() {
