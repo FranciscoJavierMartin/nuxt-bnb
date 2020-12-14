@@ -11,7 +11,10 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
     "nuxt": "2.14.7",
     "nuxt-leaflet": "^0.0.22"
   },

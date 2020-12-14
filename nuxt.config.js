@@ -40,4 +40,8 @@ export default {
   router: {
     prefetchLinks: false,
   },
+
+  serverMiddleware: [
+    { path: "/api", handler: "~/api/rest.js" },
+  ],
 };

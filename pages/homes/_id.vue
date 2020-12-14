@@ -43,37 +43,27 @@
 export default {
   async asyncData({ params, $dataApi, error }) {
     let res;
-    const homeResponse = await $dataApi.getHome(params.id);
+    const responses = await Promise.all([
+      $dataApi.getHome(params.id),
+      $dataApi.getReviewsByHomeId(params.id),
+      $dataApi.getUserByHomeId(params.id),
+    ]);
 
-    if (homeResponse.ok) {
-      const reviewResponse = await $dataApi.getReviewsByHomeId(params.id);
-      if (reviewResponse.ok) {
-        const userResponse = await $dataApi.getUserByHomeId(params.id);
+    const badResponse = responses.find((response) => !response.ok);
 
-        if (userResponse.ok) {
-          res = {
-            home: homeResponse.json,
-            reviews: reviewResponse.json.hits,
-            user: userResponse.json.hits[0],
-          };
-        } else {
-          res = error({
-            statusCode: userResponse.status,
-            message: userResponse.statusText,
-          });
-        }
-      } else {
-        res = error({
-          statusCode: reviewResponse.status,
-          message: reviewResponse.statusText,
-        });
-      }
-    } else {
+    if (badResponse) {
       res = error({
-        statusCode: homeResponse.status,
-        message: homeResponse.statusText,
+        statusCode: badResponse.status,
+        message: badResponse.statusText,
       });
+    } else {
+      res = {
+        home: responses[0].json,
+        reviews: responses[1].json,
+        user: responses[2].json,
+      };
     }
+
     return res;
   },
   head() {
