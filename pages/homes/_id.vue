@@ -43,6 +43,7 @@
 export default {
   async asyncData({ params, $dataApi, error }) {
     let res;
+
     const responses = await Promise.all([
       $dataApi.getHome(params.id),
       $dataApi.getReviewsByHomeId(params.id),
@@ -59,17 +60,12 @@ export default {
     } else {
       res = {
         home: responses[0].json,
-        reviews: responses[1].json,
-        user: responses[2].json,
+        reviews: responses[1].json.hits,
+        user: responses[2].json.hits[0],
       };
     }
 
     return res;
-  },
-  head() {
-    return {
-      title: this.home.title,
-    };
   },
   methods: {
     formatDate(dateStr) {
@@ -79,6 +75,11 @@ export default {
         year: 'numeric',
       });
     },
+  },
+  head() {
+    return {
+      title: this.home.title,
+    };
   },
 };
 </script>

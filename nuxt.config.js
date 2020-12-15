@@ -41,7 +41,5 @@ export default {
     prefetchLinks: false,
   },
 
-  serverMiddleware: [
-    { path: "/api", handler: "~/api/rest.js" },
-  ],
+  serverMiddleware: [{ path: '/api/geo', handler: '~/api/geodb.js' }],
 };

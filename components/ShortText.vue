@@ -3,17 +3,17 @@
     {{ displayText }}
     <button
       v-if="isTooLong && !isExpanded"
-      @click="isExpanded = true"
-      class="link"
       type="button"
+      class="link"
+      @click="isExpanded = true"
     >
       Read more
     </button>
     <button
       v-if="isTooLong && isExpanded"
-      @click="isExpanded = false"
-      class="link"
       type="button"
+      class="link"
+      @click="isExpanded = false"
     >
       Read less
     </button>

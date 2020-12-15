@@ -3,36 +3,33 @@
     <header class="header">
       <nuxt-link to="/">Home</nuxt-link>
       <div class="input-city">
-        <input v-model="input" type="text" ref="citySearch" />
-        <!-- <button @click="searchCity">Search</button> -->
+        <input v-model="input" type="text" @keydown="keydownPress" />
         <div class="cities-list">
           <span
-            v-for="city in results"
+            v-for="(city, index) in results"
             :key="city.id"
-            @click="setCity(city)"
             class="city-item"
+            @click="setCity(city)"
+            :class="{ focus: index === focus }"
           >
-            {{ city.name }}
+            {{ city.name }}, {{ city.region }}, {{ city.country }}
           </span>
         </div>
       </div>
-
-      <!-- <search-input @input="showValue" /> -->
     </header>
     <nuxt />
   </div>
 </template>
 
 <script>
-// import SearchInput from '~/components/SearchInput.vue';
-
 export default {
-  // components: { SearchInput },
   data() {
     return {
       prefix: '',
       results: [],
       timesout: null,
+      selectedCity: null,
+      focus: null,
     };
   },
   computed: {
@@ -46,35 +43,62 @@ export default {
         }
         this.timesout = setTimeout(() => {
           this.prefix = val;
-          this.searchCity();
-          console.log(val);
+          this.searchCity(val.split(',')[0]);
         }, 300);
       },
     },
   },
   methods: {
-    searchCity() {
-      // fetch(
-      //   `http://geodb-free-service.wirefreethought.com/v1/geo/cities?namePrefix=${this.prefix}&limit=5&offset=0&hateoasMode=false`
-      // )
-      //   .then(console.log)
-      //   .catch(console.log);
-      fetch(`/api/getJSON/${this.prefix}`)
+    searchCity(searchTerm) {
+      fetch(`/api/geo/search-city/${searchTerm}`)
         .then((res) => res.json())
         .then(({ cities }) => {
           this.results = cities;
-          // cities.forEach((element) => {
-          //   console.log(element);
-          // });
         })
-        .catch(console.log);
-    },
-    showValue(value) {
-      console.log('Value', value);
+        .catch(() => {
+          this.results = [];
+        });
     },
     setCity(city) {
-      this.prefix = city.name;
+      this.selectedCity = city;
+      this.prefix = `${city.name}, ${city.region}, ${city.country}`;
       this.results = [];
+      this.$router.push({
+        name: 'search',
+        query: {
+          lat: city.latitude,
+          lng: city.longitude,
+          label: city.name,
+        },
+      });
+    },
+    keydownPress(event) {
+      switch (event.keyCode) {
+        // Arrow up
+        case 38:
+          if (this.focus === null) {
+            this.focus = 0;
+          } else if (this.focus === 0) {
+            this.focus = this.results.length - 1;
+          } else if (this.focus > 0) {
+            this.focus--;
+          }
+          break;
+        // Arrow down
+        case 40:
+          if (this.focus === null) {
+            this.focus = 0;
+          } else if (this.focus < this.results.length - 1) {
+            this.focus++;
+          } else if (this.focus === this.results.length - 1) {
+            this.focus = 0;
+          }
+          break;
+        // Enter
+        case 13:
+          this.setCity(this.results[this.focus]);
+          break;
+      }
     },
   },
 };
@@ -90,15 +114,31 @@ export default {
 .input-city {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.input-city .cities-list {
+  position: absolute;
+  top: 100%;
 }
 
 .cities-list {
   display: flex;
   flex-direction: column;
-  z-index: 1000 !important;
+  background-color: white;
 }
 
 .city-item {
   border: 1px solid black;
+}
+
+.city-item.focus {
+  border: 1px solid blue;
+  background-color: darkcyan;
+}
+
+.city-item:hover {
+  border: 1px solid darkblue;
+  background-color: cyan;
 }
 </style>
