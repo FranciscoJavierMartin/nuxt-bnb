@@ -36,23 +36,32 @@ export default {
         if (this.timesout) {
           clearTimeout(this.timesout);
         }
-        this.timesout = setTimeout(() => {
+        this.timesout = setTimeout(async () => {
           this.prefix = val;
-          this.searchCity(val.split(',')[0]);
+          this.results = await this.searchCity(val.split(',')[0]);
         }, 300);
       },
     },
   },
   methods: {
-    searchCity(searchTerm) {
-      fetch(`/api/geo/search-city/${searchTerm}`)
-        .then((res) => res.json())
-        .then(({ cities }) => {
-          this.results = cities;
-        })
-        .catch(() => {
-          this.results = [];
-        });
+    // TODO: Refactor to a method that return an array of items
+    async searchCity(searchTerm) {
+      let res;
+      try {
+        const response = await fetch(`/api/geo/search-city/${searchTerm}`);
+        res = (await response.json()).cities;
+      } catch (error) {
+        res = [];
+      }
+      // fetch(`/api/geo/search-city/${searchTerm}`)
+      //   .then((res) => res.json())
+      //   .then(({ cities }) => {
+      //     this.results = cities;
+      //   })
+      //   .catch(() => {
+      //     this.results = [];
+      //   });
+      return res;
     },
     setCity(city) {
       this.selectedCity = city;
