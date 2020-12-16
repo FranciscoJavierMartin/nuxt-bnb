@@ -17,7 +17,6 @@
 
 <script>
 export default {
-  props: {},
   data() {
     return {
       prefix: '',
@@ -38,13 +37,13 @@ export default {
         }
         this.timesout = setTimeout(async () => {
           this.prefix = val;
+          this.focus = null;
           this.results = await this.searchCity(val.split(',')[0]);
         }, 300);
       },
     },
   },
   methods: {
-    // TODO: Refactor to a method that return an array of items
     async searchCity(searchTerm) {
       let res;
       try {
@@ -53,19 +52,12 @@ export default {
       } catch (error) {
         res = [];
       }
-      // fetch(`/api/geo/search-city/${searchTerm}`)
-      //   .then((res) => res.json())
-      //   .then(({ cities }) => {
-      //     this.results = cities;
-      //   })
-      //   .catch(() => {
-      //     this.results = [];
-      //   });
       return res;
     },
     setCity(city) {
       this.selectedCity = city;
       this.prefix = `${city.name}, ${city.region}, ${city.country}`;
+      this.focus = null;
       this.results = [];
       this.$router.push({
         name: 'search',
