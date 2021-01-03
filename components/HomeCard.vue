@@ -4,6 +4,7 @@
     {{ home.title }}
     {{ home.location.address }} {{ home.location.city }}
     {{ home.location.state }} {{ home.guests }} guests
+    {{ home.pricePerNight }} / night
   </div>
 </template>
 

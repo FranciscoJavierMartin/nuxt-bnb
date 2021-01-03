@@ -59,14 +59,39 @@ export default {
       this.prefix = `${city.name}, ${city.region}, ${city.country}`;
       this.focus = null;
       this.results = [];
-      this.$router.push({
-        name: 'search',
-        query: {
-          lat: city.latitude,
-          lng: city.longitude,
-          label: city.name,
-        },
-      });
+      let whereToGo;
+
+      // Only for developer purposes
+      if (city.name.includes('eaver')) {
+        whereToGo = {
+          name: 'search',
+          query: {
+            lat: 39.604225,
+            lng: -106.516515,
+            label: 'Beaver Creek',
+          },
+        };
+      } else if (city.name.includes('vail') || city.name.includes('Vail')) {
+        whereToGo = {
+          name: 'search',
+          query: {
+            lat: 39.6402638,
+            lng: -106.3741955,
+            label: 'Vail',
+          },
+        };
+      } else {
+        whereToGo = {
+          name: 'search',
+          query: {
+            lat: city.latitude,
+            lng: city.longitude,
+            label: city.name,
+          },
+        };
+      }
+
+      this.$router.push(whereToGo);
     },
     keydownPress(event) {
       switch (event.keyCode) {
