@@ -5,7 +5,7 @@
       :zoom="15"
       :lat="+lat"
       :lng="+lng"
-      :markers="this.getHomesMarkers()"
+      :markers="getHomesMarkers()"
     ></HomeMap>
     <div v-if="homes.length > 0">
       <nuxt-link
@@ -42,11 +42,6 @@ export default {
       lng: query.lng,
     };
   },
-  head() {
-    return {
-      title: `Homes around ${this.label}`,
-    };
-  },
   methods: {
     getHomesMarkers() {
       return this.homes.map((home) => ({
@@ -54,6 +49,11 @@ export default {
         title: home.title,
       }));
     },
+  },
+  head() {
+    return {
+      title: `Homes around ${this.label}`,
+    };
   },
 };
 </script>
