@@ -5,9 +5,9 @@
       <span
         v-for="(city, index) in results"
         :key="city.id"
+        :class="{ focus: index === focus }"
         class="city-item"
         @click="setCity(city)"
-        :class="{ focus: index === focus }"
       >
         {{ city.name }}, {{ city.region }}, {{ city.country }}
       </span>

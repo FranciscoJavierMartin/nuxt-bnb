@@ -1,9 +1,20 @@
 <template>
   <div>
-    <div>Search page</div>
-    <div>{{ lat }} / {{ lng }} / {{ label }}</div>
+    <div>Results for {{ label }}</div>
+    <HomeMap
+      :zoom="15"
+      :lat="+lat"
+      :lng="+lng"
+      :markers="this.getHomesMarkers()"
+    ></HomeMap>
     <div v-if="homes.length > 0">
-      <HomeRow v-for="home in homes" :key="home.objectID" :home="home" />
+      <nuxt-link
+        v-for="home in homes"
+        :key="home.objectID"
+        :to="`/home/${home.objectID}`"
+      >
+        <HomeRow :home="home" />
+      </nuxt-link>
     </div>
     <div v-else>No results found</div>
   </div>
@@ -11,11 +22,6 @@
 
 <script>
 export default {
-  head() {
-    return {
-      title: `Homes around ${this.label}`,
-    };
-  },
   async beforeRouteUpdate(to, from, next) {
     const data = await this.$dataApi.getHomesByLocation(
       to.query.lat,
@@ -35,6 +41,19 @@ export default {
       lat: query.lat,
       lng: query.lng,
     };
+  },
+  head() {
+    return {
+      title: `Homes around ${this.label}`,
+    };
+  },
+  methods: {
+    getHomesMarkers() {
+      return this.homes.map((home) => ({
+        ...home._geoloc,
+        title: home.title,
+      }));
+    },
   },
 };
 </script>

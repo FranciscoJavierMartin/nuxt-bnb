@@ -20,11 +20,7 @@
     {{ home.guests }} guests, {{ home.bedrooms }} rooms, {{ home.beds }} beds,
     {{ home.bathrooms }} bathrooms
     {{ home.description }}
-    <home-map
-      :lat="home._geoloc.lat"
-      :lng="home._geoloc.lng"
-      :title="home.title"
-    />
+    <home-map :makers="[marker]" />
     <div v-for="review in reviews" :key="review.objectID">
       <img :src="review.reviewer.image" />
       {{ review.reviewer.name }}
@@ -66,6 +62,15 @@ export default {
     }
 
     return res;
+  },
+  computed: {
+    marker() {
+      return {
+        lat: this.home._geoloc.lat,
+        lng: this.home._geoloc.lng,
+        title: this.home.title,
+      };
+    },
   },
   methods: {
     formatDate(dateStr) {
