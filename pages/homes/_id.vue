@@ -1,37 +1,11 @@
 <template>
-  <div>
-    <div class="carousel">
-      <img
-        v-for="image in home.images"
-        :key="image"
-        :src="image"
-        :alt="home.title"
-      />
-    </div>
-    {{ home.title }}
-    ${{ home.pricePerNigh }} / night
-    <img src="/images/marker.svg" width="20" height="20" alt="marker" />
-    {{ home.location.address }}
-    {{ home.location.city }}
-    {{ home.location.state }}
-    {{ home.location.name }}
-    <img src="/images/star.svg" width="20" height="20" alt="review" />
-    {{ home.reviewValue }}
-    {{ home.guests }} guests, {{ home.bedrooms }} rooms, {{ home.beds }} beds,
-    {{ home.bathrooms }} bathrooms
-    {{ home.description }}
-    <home-map :makers="[marker]" />
-    <div v-for="review in reviews" :key="review.objectID">
-      <img :src="review.reviewer.image" />
-      {{ review.reviewer.name }}
-      {{ formatDate(review.date) }}
-      <short-text :text="review.comment" :target="150" />
-    </div>
-    <img :src="user.image" />
-    {{ user.name }}
-    {{ formatDate(user.joined) }}
-    {{ user.reviewCount }}
-    {{ user.description }}
+  <div class="app-container">
+    <PropertyGallery :images="home.images" />
+    <PropertyDetails :home="home" />
+    <PropertyDescription :home="home" />
+    <!-- <home-map :makers="[marker]" /> -->
+    <PropertyReviews :reviews="reviews" />
+    <PropertyHost :user="user" />
   </div>
 </template>
 
@@ -70,15 +44,6 @@ export default {
         lng: this.home._geoloc.lng,
         title: this.home.title,
       };
-    },
-  },
-  methods: {
-    formatDate(dateStr) {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString(undefined, {
-        month: 'long',
-        year: 'numeric',
-      });
     },
   },
   head() {

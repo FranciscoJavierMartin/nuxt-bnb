@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import pluralize from '../utils/pluralize';
+
 export default {
   props: {
     home: {
@@ -26,10 +28,7 @@ export default {
     },
   },
   methods: {
-    pluralize(number, singularWord) {
-      const text = `${number} ${singularWord}`;
-      return number > 1 ? text + 's' : text;
-    },
+    pluralize,
   },
 };
 </script>
