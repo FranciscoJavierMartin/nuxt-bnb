@@ -1,19 +1,34 @@
 <template>
-  <div style="clear: left">
-    <img
-      :src="home.images[0]"
-      style="width: 200px; float: left; padding: 10px"
-      :alt="home.title"
+  <div>
+    <div
+      class="app-house-header"
+      :style="`background-image:url(${home.images[0]})`"
     />
-    {{ home.title }}
-    {{ home.location.address }} {{ home.location.city }}
-    {{ home.location.state }} {{ pluralize(home.guests, 'guest') }},
-    {{ pluralize(home.bedrooms, 'room') }}, {{ pluralize(home.beds, 'bed') }},
-    {{ pluralize(home.batrooms, 'bath') }} {{ home.pricePerNight }} / night
-    <img src="/images/star.svg" width="20" height="20" />{{
-      home.reviewValue
-    }}
-    ({{ home.reviewCount }})
+    <div class="app-house-body">
+      <img src="/images/icons/heart.svg" class="app-fav" />
+      <h2>{{ home.title }}</h2>
+      <div class="app-address">
+        {{ home.location.address }} {{ home.location.city }}
+        {{ home.location.state }}
+      </div>
+      <div class="app-amenities">
+        <p>
+          {{ pluralize(home.guests, 'guest') }},
+          {{ pluralize(home.bedrooms, 'room') }},
+          {{ pluralize(home.beds, 'bed') }},
+          {{ pluralize(home.batrooms, 'bath') }}
+        </p>
+        <p>{{ features }}</p>
+      </div>
+      <div class="app-flex">
+        <div class="app-rating">
+          {{ home.reviewCount }}
+        </div>
+        <div class="app-price">
+          ${{ home.pricePerNight }}<span>/ night</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,6 +40,11 @@ export default {
     home: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    features() {
+      return this.home.features.slice(0, 3).join(', ');
     },
   },
   methods: {

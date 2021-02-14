@@ -1,22 +1,32 @@
 <template>
-  <div>
-    <div>Results for {{ label }}</div>
-    <HomeMap
-      :zoom="15"
-      :lat="+lat"
-      :lng="+lng"
-      :markers="getHomesMarkers()"
-    ></HomeMap>
-    <div v-if="homes.length > 0">
-      <nuxt-link
-        v-for="home in homes"
-        :key="home.objectID"
-        :to="`/home/${home.objectID}`"
-      >
-        <HomeRow :home="home" />
-      </nuxt-link>
+  <div
+    v-if="this.homes && this.homes.length > 0"
+    class="app-search-results-page"
+  >
+    <div class="app-search-results">
+      <div class="app-search-results-listing">
+        <h2 class="app-title">Stays in {{ label }}</h2>
+        <nuxt-link
+          v-for="home in homes"
+          :key="home.objectID"
+          :to="`/home/${home.objectID}`"
+        >
+          <HomeRow class="app-house" :home="home" />
+        </nuxt-link>
+      </div>
+      <div class="app-search-results-map">
+        <!-- <PropertyMap
+          :zoom="15"
+          :lat="+lat"
+          :lng="+lng"
+          :markers="getHomesMarkers()"
+        ></PropertyMap> -->
+      </div>
     </div>
-    <div v-else>No results found</div>
+  </div>
+  <div v-else class="text-center app-search-results-page">
+    <h2 class="app-title">No results found</h2>
+    <span class="text-gray-600 text-xl">Try with another location</span>
   </div>
 </template>
 
@@ -44,10 +54,12 @@ export default {
   },
   methods: {
     getHomesMarkers() {
-      return this.homes.map((home) => ({
-        ...home._geoloc,
-        title: home.title,
-      }));
+      return this.homes.length === 0
+        ? null
+        : this.homes.map((home) => ({
+            ...home._geoloc,
+            title: home.title,
+          }));
     },
   },
   head() {
