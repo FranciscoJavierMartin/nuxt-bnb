@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="this.homes && this.homes.length > 0"
-    class="app-search-results-page"
-  >
+  <div v-if="homes && homes.length > 0" class="app-search-results-page">
     <div class="app-search-results">
       <div class="app-search-results-listing">
         <h2 class="app-title">Stays in {{ label }}</h2>

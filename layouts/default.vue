@@ -15,7 +15,7 @@
       <div class="app-user-menu">
         <img src="/images/icons/house.svg" />
         <div class="name">Host</div>
-        <img src="/images/user.jpg" class="avatar" />
+        <div id="googleButton"></div>
       </div>
     </header>
     <nuxt />
@@ -26,6 +26,9 @@
 import LocationSearchInput from '~/components/LocationSearchInput.vue';
 export default {
   components: { LocationSearchInput },
+  created() {
+    console.log('Created', this.$config.test1, this.$config.test2);
+  },
 };
 </script>
 
