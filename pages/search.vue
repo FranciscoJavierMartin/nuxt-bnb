@@ -41,7 +41,12 @@ export default {
     next();
   },
   async asyncData({ query, $dataApi }) {
-    const data = await $dataApi.getHomesByLocation(query.lat, query.lng);
+    const data = await $dataApi.getHomesByLocation(
+      query.lat,
+      query.lng,
+      query.start,
+      query.end
+    );
     return {
       homes: data.json.hits,
       label: query.label,
