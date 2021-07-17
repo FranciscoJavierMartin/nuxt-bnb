@@ -77,6 +77,9 @@ const config = {
         baseURL: 'https://res.cloudinary.com/<your-cloud-name>/image/upload',
       },
     },
+    stripe: {
+      key: '',
+    },
   },
   privateRuntimeConfig: {
     algolia: {
@@ -85,6 +88,9 @@ const config = {
     },
     cloudinary: {
       apiSecret: '',
+    },
+    stripe: {
+      secretKey: process.env.STRIPE_SECRET_KEY,
     },
   },
 
