@@ -11,13 +11,18 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
+    "@nuxtjs/cloudinary": "^1.0.3-beta-4",
     "body-parser": "^1.19.0",
+    "cloudinary-vue": "1.1.2",
+    "cookie": "^0.4.1",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
+    "google-auth-library": "^7.0.2",
     "js-cookie": "^2.2.1",
     "node-fetch": "^2.6.1",
     "nuxt": "2.14.7",
-    "nuxt-leaflet": "^0.0.22"
+    "nuxt-leaflet": "^0.0.22",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",

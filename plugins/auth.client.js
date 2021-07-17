@@ -1,6 +1,7 @@
 import Cookie from 'js-cookie';
+import { unWrap } from '../utils/fetchUtils';
 
-export default ({ $config }, inject) => {
+export default ({ $config, store }, inject) => {
   window.initAuth = init;
   addScript();
   inject('auth', {
@@ -28,15 +29,29 @@ export default ({ $config }, inject) => {
     });
   }
 
-  function parseUser(user) {
-    const idToken = user.getAuthResponse().id_token;
+  async function parseUser(user) {
     if (!user.isSignedIn()) {
       Cookie.remove($config.auth.cookieName);
+      store.commit('auth/user', null);
+    } else {
+      const idToken = user.getAuthResponse().id_token;
+      Cookie.set($config.auth.cookieName, idToken, {
+        expires: 1 / 24,
+        sameSite: 'Lax',
+      });
+
+      try {
+        const response = await unWrap(await fetch('/api/user'));
+        const user = await response.json();
+
+        store.commit('auth/user', {
+          fullName: user.name,
+          profileUrl: user.image,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
-    Cookie.set($config.auth.cookieName, idToken, {
-      expires: 1 / 24,
-      sameSite: 'Lax',
-    });
   }
 
   function signOut() {

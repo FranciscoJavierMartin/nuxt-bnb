@@ -13,9 +13,12 @@
         </button>
       </div>
       <div class="app-user-menu">
-        <img src="/images/icons/house.svg" />
-        <div class="name">Host</div>
-        <div id="googleButton"></div>
+        <template v-if="isLoggedIn">
+          <img src="/images/icons/house.svg" />
+          <div class="name">Host</div>
+          <img :src="user.profileUrl" class="avatar" />
+        </template>
+        <div v-show="!isLoggedIn" class="ml-8" id="googleButton"></div>
       </div>
     </header>
     <nuxt />
@@ -26,8 +29,13 @@
 import LocationSearchInput from '~/components/LocationSearchInput.vue';
 export default {
   components: { LocationSearchInput },
-  created() {
-    console.log('Created', this.$config.test1, this.$config.test2);
+  computed: {
+    user() {
+      return this.$store.state.auth.user;
+    },
+    isLoggedIn() {
+      return this.$store.state.auth.isLoggedIn;
+    },
   },
 };
 </script>
