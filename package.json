@@ -22,7 +22,8 @@
     "node-fetch": "^2.6.1",
     "nuxt": "2.14.7",
     "nuxt-leaflet": "^0.0.22",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "v-calendar": "^2.3.1"
   },
   "devDependencies": {
     "@nuxt/image": "^0.5.0",
