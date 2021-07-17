@@ -60,11 +60,11 @@ const config = {
     auth: {
       cookieName: 'idToken',
       clientId:
-        '313674783957-8pdade8bqpptt8n72ptpde4qggndjm35.apps.googleusercontent.com',
+        '',
     },
     algolia: {
-      appId: '1E5T8VGYOV',
-      key: '09b6757e09f9eff27791af6b3f026351',
+      appId: '',
+      key: '',
     },
     cloudinary: {
       apiKey: '',
@@ -77,8 +77,8 @@ const config = {
   },
   privateRuntimeConfig: {
     algolia: {
-      appId: '1E5T8VGYOV',
-      key: '035bfbbad856651b4f0a06797bd830fe',
+      appId: '',
+      key: '',
     },
     cloudinary: {
       apiSecret: '',
