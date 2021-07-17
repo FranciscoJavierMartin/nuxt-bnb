@@ -30,6 +30,7 @@ const config = {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/tailwindcss',
+    '@nuxt/image',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -67,6 +68,11 @@ const config = {
     },
     cloudinary: {
       apiKey: '',
+    },
+    image: {
+      cloudinary: {
+        baseURL: 'https://res.cloudinary.com/<your-cloud-name>/image/upload',
+      },
     },
   },
   privateRuntimeConfig: {
