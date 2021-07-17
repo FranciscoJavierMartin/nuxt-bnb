@@ -24,6 +24,7 @@ const config = {
     '~/plugins/dataApi',
     '~/plugins/auth.client',
     '~/plugins/vCalendar.client',
+    '~/plugins/stripe.client',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -42,6 +43,7 @@ const config = {
     'nuxt-leaflet',
     '~/modules/auth',
     '~/modules/algolia',
+    '~/modules/stripe',
     '~/modules/cloudinary',
     '@nuxtjs/cloudinary',
   ],
@@ -63,7 +65,8 @@ const config = {
   publicRuntimeConfig: {
     auth: {
       cookieName: 'idToken',
-      clientId: '',
+      clientId:
+        '',
     },
     algolia: {
       appId: '',

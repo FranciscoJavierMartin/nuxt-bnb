@@ -25,11 +25,29 @@
         <div class="app-price">
           ${{ home.pricePerNight }}<span> / night</span>
         </div>
-        <div class="app-search">
-          <input type="text" class="datepicker" placeholder="Check in" />
-          <input type="text" class="datepicker" placeholder="Check out" />
-        </div>
-        <button class="app-big-button">Request</button>
+        <client-only>
+          <data-picker
+            v-model="range"
+            is-range
+            timezone="UTC"
+            :model-config="{ timeAdjust: '00:00:00' }"
+            class="app-search"
+          >
+            <template v-slot="{ inputValue, inputEvents }">
+              <input
+                class="datepicker"
+                :value="inputValue.start"
+                v-on="inputEvents.start"
+              />
+              <input
+                class="datepicker"
+                :value="inputValue.end"
+                v-on="inputEvents.end"
+              />
+            </template>
+          </data-picker>
+        </client-only>
+        <button class="app-big-button" @click="checkout">Request</button>
       </div>
     </div>
   </div>
@@ -45,8 +63,26 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      range: {
+        start: null,
+        end: null,
+      },
+    };
+  },
+  mounted() {
+    if (this.$route.query.result === 'success') {
+      alert('succes');
+    }
+  },
   methods: {
     pluralize,
+    checkout() {
+      const start = this.range.start.getTime() / 1000;
+      const end = this.range.end.getTIme() / 1000;
+      this.$stripe.checkout(this.home.objectID, start, end);
+    },
   },
 };
 </script>
