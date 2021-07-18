@@ -12,6 +12,11 @@
 import homes from '@/data/homes.json';
 
 export default {
+  async asyncData({ $dataApi }) {
+    return {
+      homes: (await $dataApi.getHomes()).json.hits,
+    };
+  },
   data() {
     return {
       homes: homes.slice(0, 3),

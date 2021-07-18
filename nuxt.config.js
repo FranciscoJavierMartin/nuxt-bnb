@@ -1,4 +1,4 @@
-export default {
+const config = {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: 'Matering Nuxt: %s',
@@ -17,10 +17,15 @@ export default {
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [],
+  css: ['~/assets/sass/app.scss'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: [
+    '~/plugins/dataApi',
+    '~/plugins/auth.client',
+    '~/plugins/vCalendar.client',
+    '~/plugins/stripe.client',
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -29,15 +34,75 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
+    '@nuxtjs/tailwindcss',
+    '@nuxt/image',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: ['nuxt-leaflet'],
+  modules: [
+    'nuxt-leaflet',
+    '~/modules/auth',
+    '~/modules/algolia',
+    '~/modules/stripe',
+    '~/modules/cloudinary',
+    '@nuxtjs/cloudinary',
+  ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+    extractCSS: true,
+    loaders: {
+      limit: 0,
+    },
+  },
 
   router: {
     prefetchLinks: false,
   },
+
+  serverMiddleware: [{ path: '/api/geo', handler: '~/api/geodb.js' }],
+
+  publicRuntimeConfig: {
+    rootUrl:
+      process.env.NODE_ENV === 'production'
+        ? 'https://nuxt-bnb.vercel.app/'
+        : 'http://localhost:3000',
+    auth: {
+      cookieName: 'idToken',
+      clientId: '',
+    },
+    algolia: {
+      appId: '',
+      key: '',
+    },
+    cloudinary: {
+      apiKey: '',
+    },
+    image: {
+      cloudinary: {
+        baseURL: 'https://res.cloudinary.com/<your-cloud-name>/image/upload',
+      },
+    },
+    stripe: {
+      key: '',
+    },
+  },
+  privateRuntimeConfig: {
+    algolia: {
+      appId: '',
+      key: '',
+    },
+    cloudinary: {
+      apiSecret: '',
+    },
+    stripe: {
+      secretKey: process.env.STRIPE_SECRET_KEY,
+    },
+  },
+
+  cloudinary: {
+    cloudName: '',
+  },
 };
+
+export default config;
