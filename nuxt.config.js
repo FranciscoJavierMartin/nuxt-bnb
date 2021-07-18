@@ -63,10 +63,13 @@ const config = {
   serverMiddleware: [{ path: '/api/geo', handler: '~/api/geodb.js' }],
 
   publicRuntimeConfig: {
+    rootUrl:
+      process.env.NODE_ENV === 'production'
+        ? 'https://nuxt-bnb.vercel.app/'
+        : 'http://localhost:3000',
     auth: {
       cookieName: 'idToken',
-      clientId:
-        '',
+      clientId: '',
     },
     algolia: {
       appId: '',

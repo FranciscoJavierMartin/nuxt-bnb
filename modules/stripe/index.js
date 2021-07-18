@@ -13,6 +13,14 @@ export default function () {
     app.use('/api/stripe/create-session', createSession);
   });
 
+  this.nuxt.hook('render:setupMiddleware', (app) => {
+    app.use('/hooks/stripe', async (req, res, next) => {
+      const meta = req.body.data.object.metadata;
+      await apis.user.bookHome(meta.id, meta.homeId, meta.start, meta.end);
+      res.end(`${meta.identityId} booked ${meta.homeId}`);
+    });
+  });
+
   async function createSession(req, res) {
     const body = req.body;
     if (

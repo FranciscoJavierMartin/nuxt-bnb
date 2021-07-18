@@ -34,6 +34,27 @@ export default (algoliaConfig) => {
         return getErrorResponse(error);
       }
     },
+    bookHome: async (identityId, homeId, start, end) => {
+      try {
+        return unWrap(
+          await fetch(
+            `https://${$config.algolia.appId}-dsn.algolia.net/1/indexes/bookings/`,
+            {
+              headers,
+              method: 'POST',
+              body: JSON.stringify({
+                identityId,
+                homeId,
+                start,
+                end,
+              }),
+            }
+          )
+        );
+      } catch (error) {
+        return getErrorResponse(error);
+      }
+    },
     getById: async (identity) => {
       try {
         return unWrap(
